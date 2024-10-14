@@ -12,23 +12,35 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun Onboarding() {
+fun Onboarding(
+    navController: NavController,
+    onClick: (firstName: String, lastName: String, email: String, navController: NavController)->Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
+        var firstName by remember { mutableStateOf("") }
+        var lastName by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf("") }
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Title",
@@ -60,8 +72,10 @@ fun Onboarding() {
         )
         TextField(
             modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth(),
-            value = "first name",
-            onValueChange = {}
+            value = firstName,
+            onValueChange = {
+                firstName = it
+            }
         )
         Text(
             modifier = Modifier.padding(horizontal = 32.dp),
@@ -69,8 +83,10 @@ fun Onboarding() {
         )
         TextField(
             modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth(),
-            value = "last name",
-            onValueChange = {}
+            value = lastName,
+            onValueChange = {
+                lastName = it
+            }
         )
         Text(
             modifier = Modifier.padding(horizontal = 32.dp),
@@ -78,20 +94,78 @@ fun Onboarding() {
         )
         TextField(
             modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth(),
-            value = "email",
-            onValueChange = {}
+            value = email,
+            onValueChange = {
+                email = it
+            }
         )
         Button(
             modifier = Modifier.padding(horizontal = 32.dp),
-            content = {},
-            onClick = {}
-        )
+            onClick = { onClick(firstName, lastName, email, navController) }
+        ){
+            Text(
+                text = "Register",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
-@Preview
 @Composable
-fun OnboardingPreview(){
-    Onboarding()
+fun HomeScreen(
+    onClick: ()->Unit = {}
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .height(75.dp),
+            text = "Home Screen"
+        )
+        Button(
+            modifier = Modifier.padding(horizontal = 32.dp),
+            onClick = onClick
+        ){
+            Text(
+                text = "Go To Profile",
+                textAlign = TextAlign.Center
+            )
+        }
+    }
 }
+
+@Composable
+fun Profile(
+    onClick: ()->Unit = {}
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .height(75.dp),
+            text = "Profile"
+        )
+        Button(
+            modifier = Modifier.padding(horizontal = 32.dp),
+            onClick = onClick
+        ){
+            Text(
+                text = "Log Out",
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+//@Preview
+//@Composable
+//fun OnboardingPreview(){
+//    Onboarding()
+//}
 
