@@ -41,21 +41,22 @@ fun Greeting(sharedPreferences: SharedPreferences) {
     var registered = sharedPreferences.getBoolean("registered", false)
     val navController = rememberNavController()
     val startDestination = if(registered){
-        DishDetails.route
+        HomeScreen.route
     }else{
-        Home.route
+        Onboarding.route
     }
-    NavHost(navController = navController,
-        startDestination = Home.route
-    ){
-        composable(Home.route){
+    NavHost(navController = navController, startDestination = startDestination){
+        composable(Onboarding.route){
             Onboarding()
         }
-        composable(DishDetails.route + "/{${DishDetails.argDishId}}",
-            arguments = listOf(navArgument(DishDetails.argDishId) { type = NavType.IntType })
+        composable(HomeScreen.route){
+            //HomeScreen()
+        }
+        composable(Profile.route + "/{${Profile.argDishId}}",
+            arguments = listOf(navArgument(Profile.argDishId) { type = NavType.IntType })
         ) {
-            val id = requireNotNull(it.arguments?.getInt(DishDetails.argDishId)) { "Dish id is null" }
-            //DishDetails(id)
+            val id = requireNotNull(it.arguments?.getInt(Profile.argDishId)) { "Dish id is null" }
+            //Profile(id)
         }
     }
 }
