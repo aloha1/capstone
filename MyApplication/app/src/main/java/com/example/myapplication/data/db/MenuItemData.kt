@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 
 @Entity(tableName = "menu")
-data class MenuData(
+data class MenuItemData(
     @PrimaryKey
     @SerialName("id")
     val id: String,

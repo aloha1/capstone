@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
@@ -113,7 +114,10 @@ fun Onboarding(
             modifier = Modifier
                 .padding(horizontal = 32.dp, vertical = 16.dp)
                 .fillMaxWidth(),
-            onClick = { onClick(firstName, lastName, email, navController) }
+            onClick = {
+//                viewModel.setRegistered(true)
+                onClick(firstName, lastName, email, navController)
+            }
         ){
             Text(
                 text = "Register",
@@ -128,6 +132,7 @@ fun Onboarding(
 fun Profile(
     onClick: ()->Unit = {}
 ) {
+//    val viewModel: MyViewModel = viewModel()
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
@@ -184,7 +189,10 @@ fun Profile(
             modifier = Modifier
                 .padding(horizontal = 32.dp, vertical = 32.dp)
                 .fillMaxWidth(),
-            onClick = onClick
+            onClick = {
+//                viewModel.setRegistered(true)
+                onClick()
+            }
         ){
             Text(
                 text = "Log Out",
@@ -199,4 +207,3 @@ fun Profile(
 //fun OnboardingPreview(){
 //    Onboarding()
 //}
-

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
@@ -24,21 +25,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.ui.theme.LittleLemonColor
+//import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun HomeScreen(
-    onClick: ()->Unit = {}
+    onClick: ()->Unit = {},
 ) {
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
         Column {
-            TopAppBar()
-            //UpperPanel()
-            LowerPanel(onClick)
+            TopAppBar(onClick)
+            UpperPanel()
+//            LowerPanel()
         }
 
     }
@@ -46,21 +48,22 @@ fun HomeScreen(
 
 
 @Composable
-fun TopAppBar() {
+fun TopAppBar(onClick: ()->Unit) {
     Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Little Lemon Logo",
-            modifier = Modifier.fillMaxWidth(0.5F)
+            modifier = Modifier.fillMaxWidth(0.8F)
+                .height(45.dp)
                 .padding(horizontal = 20.dp)
         )
-        IconButton(onClick = { }) {
+        IconButton(onClick = onClick) {
             Image(
-                painter = painterResource(id = R.drawable.ic_cart),
+                painter = painterResource(id = R.drawable.profile),
                 contentDescription = "Cart",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(35.dp).padding(4.dp)
             )
         }
     }
@@ -90,7 +93,7 @@ fun UpperPanel() {
                 .padding(top = 20.dp)
         ) {
             Text(
-                text = "We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist",
+                text = "We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(bottom = 28.dp, end = 20.dp)
@@ -137,7 +140,7 @@ fun LowerPanel(onClick: ()->Unit){
 @Preview(showBackground = true)
 @Composable
 fun TopAppBarPreview() {
-    TopAppBar()
+    TopAppBar(onClick = {})
 }
 
 @Preview(showBackground = true)

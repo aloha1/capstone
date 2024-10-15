@@ -9,13 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 
 class MainActivity : ComponentActivity() {
 
@@ -24,11 +23,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //viewModel = ViewModelProvider.
         sharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
+//        val registered = sharedPreferences.getBoolean("registered", false)
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(sharedPreferences)
+                    Greeting()
                     //val contentNegotiation: ContentNegotiation
                 }
             }
@@ -36,9 +37,9 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Greeting(sharedPreferences: SharedPreferences) {
-        val registered = sharedPreferences.getBoolean("registered", false)
+    fun Greeting() {
         val navController = rememberNavController()
+        val registered = sharedPreferences.getBoolean("registered", false)
         val startDestination = if(registered){
             HomeScreen.route
         }else{
@@ -53,7 +54,10 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(onClick = { navController.navigate(Profile.route) })
             }
             composable(Profile.route) {
-                Profile(onClick = { navController.navigate(Onboarding.route) })
+                Profile(onClick = {
+                    sharedPreferences.edit().putBoolean("registered", false).apply()
+                    navController.navigate(Onboarding.route)
+                })
             }
         }
     }
@@ -62,17 +66,9 @@ class MainActivity : ComponentActivity() {
         val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         if(firstName.isNotEmpty() && lastName.isNotEmpty() && emailRegex.matches(email)){
             navController.navigate(HomeScreen.route)
+            sharedPreferences.edit().putBoolean("registered", true).apply()
         }else{
-            Log.d("TAG", "navToHome: ")
+            Log.d("TAG", "Invalid: ")
         }
-
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    MyApplicationTheme {
-//        Greeting()
-//    }
-//}

@@ -2,6 +2,7 @@
 agp = "8.7.0"
 composeVersion = "1.0.0-alpha.1"
 hiltAndroid = "2.51.1"
+hiltNavigationFragment = "1.0.0"
 kotlin = "2.0.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -19,6 +20,7 @@ composeMaterial3 = "1.0.0-alpha26"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-navigation-fragment = { module = "androidx.hilt:hilt-navigation-fragment", version.ref = "hiltNavigationFragment" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "composeVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
