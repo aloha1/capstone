@@ -1,10 +1,8 @@
 package com.example.myapplication
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,13 +11,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import kotlin.coroutines.coroutineContext
 
 class MainActivity : ComponentActivity() {
 
@@ -27,7 +22,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         sharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
         setContent {
             MyApplicationTheme {
@@ -51,13 +45,12 @@ class MainActivity : ComponentActivity() {
         NavHost(navController = navController, startDestination = startDestination){
             composable(Onboarding.route){
                 Onboarding(navController = navController, onClick = onClick)
-                //onClick = { navController.navigate(HomeScreen.route)})
             }
             composable(HomeScreen.route){
-                HomeScreen(onClick = { navController.navigate(Profile.route)})
+                HomeScreen(onClick = { navController.navigate(Profile.route) })
             }
             composable(Profile.route) {
-                Profile(onClick = { navController.navigate(Onboarding.route)})
+                Profile(onClick = { navController.navigate(Onboarding.route) })
             }
         }
     }

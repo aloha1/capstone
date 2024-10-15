@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -44,14 +46,15 @@ fun Onboarding(
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Title",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .height(50.dp),
+                .height(100.dp)
+                .width(240.dp),
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(75.dp)
+                .height(125.dp)
                 .background(color = Color.DarkGray)
                 .padding(vertical = 12.dp),
             textAlign = TextAlign.Center,
@@ -62,45 +65,54 @@ fun Onboarding(
         )
         Text(
             modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .height(75.dp),
+                .padding(horizontal = 32.dp, vertical = 55.dp)
+                .wrapContentHeight(),
             text = "Personal information"
         )
         Text(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
             text = "First name"
         )
         TextField(
-            modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(),
             value = firstName,
             onValueChange = {
                 firstName = it
             }
         )
         Text(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
             text = "Last name"
         )
         TextField(
-            modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth(),
+            modifier = Modifier.padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(),
             value = lastName,
             onValueChange = {
                 lastName = it
             }
         )
         Text(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
             text = "Email"
         )
         TextField(
-            modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth(),
+            modifier = Modifier.padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(),
             value = email,
             onValueChange = {
                 email = it
             }
         )
         Button(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier
+                .padding(horizontal = 32.dp, vertical = 16.dp)
+                .fillMaxWidth(),
             onClick = { onClick(firstName, lastName, email, navController) }
         ){
             Text(
@@ -126,7 +138,9 @@ fun HomeScreen(
             text = "Home Screen"
         )
         Button(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth(),
             onClick = onClick
         ){
             Text(
@@ -152,7 +166,9 @@ fun Profile(
             text = "Profile"
         )
         Button(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth(),
             onClick = onClick
         ){
             Text(
