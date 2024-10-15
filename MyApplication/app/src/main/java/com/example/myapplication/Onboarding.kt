@@ -123,33 +123,6 @@ fun Onboarding(
     }
 }
 
-@Composable
-fun HomeScreen(
-    onClick: ()->Unit = {}
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .height(75.dp),
-            text = "Home Screen"
-        )
-        Button(
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .fillMaxWidth(),
-            onClick = onClick
-        ){
-            Text(
-                text = "Go To Profile",
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
 
 @Composable
 fun Profile(
