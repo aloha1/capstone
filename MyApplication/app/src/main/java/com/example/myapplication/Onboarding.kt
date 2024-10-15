@@ -159,15 +159,57 @@ fun Profile(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Title",
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .height(100.dp)
+                .width(240.dp),
+        )
         Text(
             modifier = Modifier
+                .padding(horizontal = 32.dp, vertical = 70.dp)
+                .wrapContentHeight(),
+            text = "Personal information"
+        )
+        Text(
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
+            text = "First name"
+        )
+        TextField(
+            modifier = Modifier
                 .padding(horizontal = 32.dp)
-                .height(75.dp),
-            text = "Profile"
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            value = "firstName",
+            onValueChange = {}
+        )
+        Text(
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
+            text = "Last name"
+        )
+        TextField(
+            modifier = Modifier.padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            value = "lastName",
+            onValueChange = {}
+        )
+        Text(
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
+            text = "Email"
+        )
+        TextField(
+            modifier = Modifier.padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            value = "email",
+            onValueChange = {}
         )
         Button(
             modifier = Modifier
-                .padding(horizontal = 32.dp)
+                .padding(horizontal = 32.dp, vertical = 32.dp)
                 .fillMaxWidth(),
             onClick = onClick
         ){
