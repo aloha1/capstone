@@ -5,11 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
@@ -26,11 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication.data.db.MenuItemRoom
 import com.example.myapplication.ui.theme.LittleLemonColor
 //import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun HomeScreen(
+    menuItems: List<MenuItemRoom>,
     onClick: ()->Unit = {},
 ) {
     Column(
@@ -41,6 +46,7 @@ fun HomeScreen(
             TopAppBar(onClick)
             UpperPanel()
 //            LowerPanel()
+            MenuItemsList(menuItems)
         }
 
     }
@@ -113,6 +119,38 @@ fun UpperPanel() {
                 text = "Order Take Away"
             )
         }
+    }
+}
+
+
+@Composable
+private fun MenuItemsList(items: List<MenuItemRoom>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(top = 20.dp)
+    ) {
+        items(
+            items = items,
+            itemContent = { menuItem ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(menuItem.title)
+                    Text(menuItem.category)
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(5.dp),
+                        textAlign = TextAlign.Right,
+                        text = menuItem.price
+                    )
+                    Text(menuItem.description)
+
+                }
+            }
+        )
     }
 }
 

@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-    id ("org.jetbrains.kotlin.plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.runtime.livedata)
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.content.negotiation)
