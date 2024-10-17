@@ -10,11 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,14 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.data.db.MenuItemRoom
 import com.example.myapplication.ui.theme.LittleLemonColor
-//import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun HomeScreen(
@@ -46,6 +46,7 @@ fun HomeScreen(
             TopAppBar(onClick)
             UpperPanel()
 //            LowerPanel()
+            WeeklySpecialCard()
             MenuItemsList(menuItems)
         }
 
@@ -122,7 +123,22 @@ fun UpperPanel() {
     }
 }
 
+@Composable
+fun WeeklySpecialCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "Weekly Special Card",
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier
+                .padding(8.dp)
+        )
+    }
+}
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun MenuItemsList(items: List<MenuItemRoom>) {
     LazyColumn(
@@ -133,44 +149,42 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
         items(
             items = items,
             itemContent = { menuItem ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(menuItem.title)
-                    Text(menuItem.category)
-                    Text(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(5.dp),
-                        textAlign = TextAlign.Right,
-                        text = menuItem.price
-                    )
-                    Text(menuItem.description)
-
+                Card {
+                    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                        Column {
+                            Text(
+                                text = menuItem.title,
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                            Text(
+                                text = menuItem.category,
+                                style = MaterialTheme.typography.headlineSmall
+                            )
+                            Text(
+                                text = menuItem.description,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier
+                                    .fillMaxWidth(fraction = 0.75F)
+                                    .padding(top = 5.dp, bottom = 5.dp)
+                            )
+                            Text(
+                                text = menuItem.price,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        GlideImage(
+                            model = menuItem.image,
+//                            modifier = Modifier.,
+                            contentDescription = "Dish Image"
+                        )
+                    }
                 }
+                Divider(
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    thickness = 1.dp,
+                    color = LittleLemonColor.yellow
+                )
             }
-        )
-    }
-}
-
-@Composable
-fun LowerPanel(onClick: ()->Unit){
-    Text(
-        modifier = Modifier
-            .padding(horizontal = 32.dp)
-            .height(75.dp),
-        text = "Home Screen"
-    )
-    Button(
-        modifier = Modifier
-            .padding(horizontal = 32.dp)
-            .fillMaxWidth(),
-        onClick = onClick
-    ){
-        Text(
-            text = "Go To Profile",
-            textAlign = TextAlign.Center
         )
     }
 }
