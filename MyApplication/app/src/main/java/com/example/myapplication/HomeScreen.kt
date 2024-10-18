@@ -13,13 +13,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,12 +50,18 @@ fun HomeScreen(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
+        var orderedItems by remember { mutableStateOf("") }
+        var searchPhrase by remember { mutableStateOf("") }
         Column {
             TopAppBar(onClick)
-            UpperPanel()
-//            LowerPanel()
+            UpperPanel(searchPhrase){
+                searchPhrase = it
+            }
             WeeklySpecialCard()
-            MenuItemsList(menuItems)
+            FilterRow{
+                orderedItems.contains(it)
+            }
+            MenuItemsList(menuItems.filter{ it.category.contains(orderedItems) }.filter{ it.title.contains(searchPhrase) })
         }
 
     }
@@ -77,7 +91,7 @@ fun TopAppBar(onClick: ()->Unit) {
 }
 
 @Composable
-fun UpperPanel() {
+fun UpperPanel(searchPhrase: String, onValueChanged: (String) -> Unit) {
     Column(
         modifier = Modifier
             .background(color = LittleLemonColor.green)
@@ -113,13 +127,16 @@ fun UpperPanel() {
                 modifier = Modifier.clip(RoundedCornerShape(10.dp))
             )
         }
-        Button(
-            onClick = { }
-        ) {
-            Text(
-                text = "Order Take Away"
-            )
-        }
+        OutlinedTextField(
+            value = searchPhrase,
+            onValueChange = onValueChanged,
+            label = { Text("Search") },
+            placeholder = { Text("Enter to Search") },
+            leadingIcon = { Icon( imageVector = Icons.Default.Search, contentDescription = "") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 50.dp, end = 50.dp)
+        )
     }
 }
 
@@ -130,11 +147,38 @@ fun WeeklySpecialCard() {
             .fillMaxWidth()
     ) {
         Text(
-            text = "Weekly Special Card",
-            style = MaterialTheme.typography.headlineSmall,
+            text = "Order For Delivery",
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .padding(8.dp)
         )
+    }
+}
+
+@Composable
+fun FilterRow(onClick: (String) -> Unit) {
+    Row(modifier = Modifier.height(45.dp)) {
+        Button(
+            onClick = { onClick("starter") }
+        ) {
+            Text(text = "Starter")
+        }
+        Button(
+            onClick = { onClick("mains") }
+        ) {
+            Text(text = "Mains")
+        }
+        Button(
+            onClick = { onClick("desert") }
+
+        ) {
+            Text(text = "Desert")
+        }
+        Button(
+            onClick = { onClick("") }
+        ) {
+            Text(text = "Drinks")
+        }
     }
 }
 
@@ -154,10 +198,6 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
                         Column {
                             Text(
                                 text = menuItem.title,
-                                style = MaterialTheme.typography.headlineMedium
-                            )
-                            Text(
-                                text = menuItem.category,
                                 style = MaterialTheme.typography.headlineSmall
                             )
                             Text(
@@ -174,7 +214,7 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
                         }
                         GlideImage(
                             model = menuItem.image,
-//                            modifier = Modifier.,
+                            modifier = Modifier.fillMaxHeight(),
                             contentDescription = "Dish Image"
                         )
                     }
@@ -198,5 +238,17 @@ fun TopAppBarPreview() {
 @Preview(showBackground = true)
 @Composable
 fun UpperPanelPreview() {
-    UpperPanel()
+    UpperPanel("") {}
 }
+
+@Preview(showBackground = true)
+@Composable
+fun WeeklySpecialCardPreview() {
+    WeeklySpecialCard()
+}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun FilterRowPreview() {
+//    FilterRow()
+//}
