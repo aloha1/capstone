@@ -215,7 +215,7 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
                                     .padding(top = 5.dp, bottom = 5.dp)
                             )
                             Text(
-                                text = menuItem.price,
+                                text = "price: ${menuItem.price}g",
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
