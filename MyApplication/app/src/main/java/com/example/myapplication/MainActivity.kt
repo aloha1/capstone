@@ -2,7 +2,7 @@ package com.example.myapplication
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -57,7 +56,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val databaseMenuItems = database.menuDao().getAll().observeAsState(initial = emptyList())
                     Greeting(databaseMenuItems.value)
-                    //val contentNegotiation: ContentNegotiation
                 }
             }
         }
@@ -90,10 +88,11 @@ class MainActivity : ComponentActivity() {
         }else{
             Onboarding.route
         }
-        val onClick = this::navToHome
+        val onBoardingOnClick = this::navToHome
+        val profileOnClick = this::navLogout
         NavHost(navController = navController, startDestination = startDestination){
             composable(Onboarding.route){
-                Onboarding(navController = navController, onClick = onClick)
+                Onboarding(navController = navController, onClick = onBoardingOnClick)
             }
             composable(HomeScreen.route){
                 HomeScreen(
@@ -102,10 +101,7 @@ class MainActivity : ComponentActivity() {
                 )
             }
             composable(Profile.route) {
-                Profile(onClick = {
-                    sharedPreferences.edit().putBoolean("registered", false).apply()
-                    navController.navigate(Onboarding.route)
-                })
+                Profile(context = this@MainActivity, navController = navController, onClick = profileOnClick)
             }
         }
     }
@@ -115,8 +111,19 @@ class MainActivity : ComponentActivity() {
         if(firstName.isNotEmpty() && lastName.isNotEmpty() && emailRegex.matches(email)){
             navController.navigate(HomeScreen.route)
             sharedPreferences.edit().putBoolean("registered", true).apply()
+            sharedPreferences.edit().putString("first_name", firstName).apply()
+            sharedPreferences.edit().putString("last_name", lastName).apply()
+            sharedPreferences.edit().putString("email", email).apply()
         }else{
-            Log.d("TAG", "Invalid: ")
+            Toast.makeText(this, "Please Enter Correct Information", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun navLogout(navController: NavController){
+        sharedPreferences.edit().putBoolean("registered", false).apply()
+        sharedPreferences.edit().putString("first_name", "").apply()
+        sharedPreferences.edit().putString("last_name", "").apply()
+        sharedPreferences.edit().putString("email", "").apply()
+        navController.navigate(Onboarding.route)
     }
 }

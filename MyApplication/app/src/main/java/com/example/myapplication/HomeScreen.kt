@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +41,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.data.db.MenuItemRoom
 import com.example.myapplication.ui.theme.LittleLemonColor
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -54,16 +56,14 @@ fun HomeScreen(
         var searchPhrase by remember { mutableStateOf("") }
         Column {
             TopAppBar(onClick)
-            UpperPanel(searchPhrase){
-                searchPhrase = it
-            }
-            WeeklySpecialCard()
-            FilterRow{
-                orderedItems.contains(it)
-            }
-            MenuItemsList(menuItems.filter{ it.category.contains(orderedItems) }.filter{ it.title.contains(searchPhrase) })
+            UpperPanel(searchPhrase){ searchPhrase = it }
+            WeeklySpecialCard{ orderedItems = it }
+            MenuItemsList(
+                menuItems
+                .filter{ it.category.contains(orderedItems) }
+                .filter{ it.title.lowercase(Locale.getDefault()).contains(searchPhrase) }
+            )
         }
-
     }
 }
 
@@ -130,54 +130,57 @@ fun UpperPanel(searchPhrase: String, onValueChanged: (String) -> Unit) {
         OutlinedTextField(
             value = searchPhrase,
             onValueChange = onValueChanged,
-            label = { Text("Search") },
-            placeholder = { Text("Enter to Search") },
+            placeholder = { Text(text = "Enter to Search", modifier = Modifier.background(Color.White)) },
             leadingIcon = { Icon( imageVector = Icons.Default.Search, contentDescription = "") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 50.dp, end = 50.dp)
+                .padding(start = 25.dp, end = 25.dp, top = 16.dp)
+                .clip(shape = RoundedCornerShape(4.dp))
+                .background(Color.White)
         )
     }
 }
 
 @Composable
-fun WeeklySpecialCard() {
+fun WeeklySpecialCard(onClick: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Text(
-            text = "Order For Delivery",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .padding(8.dp)
-        )
-    }
-}
+        Column {
+            Text(
+                text = "ORDER FOR DELIVERY!",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            Row(modifier = Modifier.height(45.dp)) {
+                Button(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    onClick = { onClick("starter") }
+                ) {
+                    Text(text = "Starter")
+                }
+                Button(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    onClick = { onClick("mains") }
+                ) {
+                    Text(text = "Mains")
+                }
+                Button(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    onClick = { onClick("desserts") }
 
-@Composable
-fun FilterRow(onClick: (String) -> Unit) {
-    Row(modifier = Modifier.height(45.dp)) {
-        Button(
-            onClick = { onClick("starter") }
-        ) {
-            Text(text = "Starter")
-        }
-        Button(
-            onClick = { onClick("mains") }
-        ) {
-            Text(text = "Mains")
-        }
-        Button(
-            onClick = { onClick("desert") }
-
-        ) {
-            Text(text = "Desert")
-        }
-        Button(
-            onClick = { onClick("") }
-        ) {
-            Text(text = "Drinks")
+                ) {
+                    Text(text = "Desert")
+                }
+                Button(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    onClick = { onClick("") }
+                ) {
+                    Text(text = "All")
+                }
+            }
         }
     }
 }
@@ -188,11 +191,15 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(top = 20.dp)
     ) {
         items(
             items = items,
             itemContent = { menuItem ->
+                Divider(
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    thickness = 1.dp,
+                    color = LittleLemonColor.yellow
+                )
                 Card {
                     Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
                         Column {
@@ -219,11 +226,6 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
                         )
                     }
                 }
-                Divider(
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-                    thickness = 1.dp,
-                    color = LittleLemonColor.yellow
-                )
             }
         )
     }
@@ -244,11 +246,5 @@ fun UpperPanelPreview() {
 @Preview(showBackground = true)
 @Composable
 fun WeeklySpecialCardPreview() {
-    WeeklySpecialCard()
+    WeeklySpecialCard{ }
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun FilterRowPreview() {
-//    FilterRow()
-//}
